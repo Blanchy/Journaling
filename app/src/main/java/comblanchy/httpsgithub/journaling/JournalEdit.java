@@ -2,9 +2,12 @@ package comblanchy.httpsgithub.journaling;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -12,7 +15,9 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class JournalEdit extends AppCompatActivity {
+import java.text.DateFormat;
+
+public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFragmentInteractionListener {
 
     private int mm;
     private int dd;
@@ -56,11 +61,10 @@ public class JournalEdit extends AppCompatActivity {
         if (i.hasExtra("yyyy")) {
             yyyy = i.getIntExtra("yyyy", 2017);
         }
-
         String dateformat = mm + " / " + dd + " / " + yyyy;
 
-        weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
-        tempView = (TextView) findViewById(R.id.tempView);
+        //weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
+        //tempView = (TextView) findViewById(R.id.tempView);
         title = (TextView) findViewById(R.id.title);
         description = (TextView) findViewById(R.id.desc);
         date = (TextView) findViewById(R.id.date);
@@ -73,6 +77,12 @@ public class JournalEdit extends AppCompatActivity {
 
         decrement = (ImageButton) findViewById(R.id.left);
         increment = (ImageButton) findViewById(R.id.right);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragframe, new WeatherDisplay())
+                    .commit();
+        }
 
     }
 
@@ -104,5 +114,10 @@ public class JournalEdit extends AppCompatActivity {
         createEntry();
         Intent intent = new Intent(this, DailyView.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

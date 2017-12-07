@@ -12,6 +12,7 @@ import java.net.URL;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.location.LocationManager;
 import android.util.Log;
 
 public class RemoteFetch {
@@ -20,6 +21,7 @@ public class RemoteFetch {
             "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
 
     public static JSONObject getJSON(Context context, String city){
+
         try {
             URL url = new URL(String.format(OPEN_WEATHER_MAP_API, city));
             HttpURLConnection connection =
@@ -45,6 +47,7 @@ public class RemoteFetch {
 
             return data;
         }catch(Exception e){
+            e.printStackTrace();
             return null;
         }
     }

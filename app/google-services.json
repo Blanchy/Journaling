@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "563546400152",
+    "project_id": "journaling-8c10e"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563546400152:android:42c1977f8c38bf51",
+        "android_client_info": {
+          "package_name": "comblanchy.httpsgithub.journaling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563546400152-0a78odajo904o2fuptrb0jj3jta57u28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comblanchy.httpsgithub.journaling",
+            "certificate_hash": "7b12d544ba1d9c5c147e9a6e3153a08c47985fd2"
+          }
+        },
+        {
+          "client_id": "563546400152-j8kep26imvrosvhh2rn0f2u4tu3cap8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9CWyyokJjVBkg_ZP1IPw8PQ_uCDBxKWg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

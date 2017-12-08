@@ -252,23 +252,23 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
         if(actualId == 800){
             long currentTime = new Date().getTime();
             if(currentTime>=sunrise && currentTime<sunset) {
-                //icon = getActivity().getString(R.string.weather_sunny);
+                weatherIcon.setImageResource(R.drawable.sun_icon);
             } else {
-                //icon = getActivity().getString(R.string.weather_clear_night);
+                weatherIcon.setImageResource(R.drawable.moon_icon);
             }
         } else {
             switch(code) {
-                case 2 : icon = "thunder";
+                case 2 : weatherIcon.setImageResource(R.drawable.thunder_icon);
                     break;
-                case 3 : icon = "drizzle";
+                case 3 : weatherIcon.setImageResource(R.drawable.rain_icon);
                     break;
-                case 7 : icon = "foggy";
+                case 7 : weatherIcon.setImageResource(R.drawable.fog_icon);
                     break;
-                case 8 : icon = "cloudy";
+                case 8 : weatherIcon.setImageResource(R.drawable.cloud_icon);
                     break;
-                case 6 : icon = "snowy";
+                case 6 : weatherIcon.setImageResource(R.drawable.snow_icon);
                     break;
-                case 5 : icon = "rainy";
+                case 5 : weatherIcon.setImageResource(R.drawable.storm_icon);
                     break;
             }
         }
@@ -278,17 +278,17 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
     private void setWeatherFromIntent(int icon, double temp) {
         this.temp.setText(String.valueOf(temp));
         switch(icon) {
-            case 2 : ; // thunder
+            case 2 : weatherIcon.setImageResource(R.drawable.thunder_icon);
                 break;
-            case 3 : ; // drizzle
+            case 3 : weatherIcon.setImageResource(R.drawable.rain_icon);
                 break;
-            case 7 : ; // foggy
+            case 7 : weatherIcon.setImageResource(R.drawable.fog_icon);
                 break;
-            case 8 : ; // cloudy
+            case 8 : weatherIcon.setImageResource(R.drawable.cloud_icon);
                 break;
-            case 6 : ; // snowy
+            case 6 : weatherIcon.setImageResource(R.drawable.snow_icon);
                 break;
-            case 5 : ; // rainy
+            case 5 : weatherIcon.setImageResource(R.drawable.storm_icon);
                 break;
         }
         //weatherIcon.setImageResource();

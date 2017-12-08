@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemcontainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/bullet"
-        android:layout_width="37dp"
-        android:layout_height="36dp"
-        android:scaleType="center"
-        app:srcCompat="@android:drawable/presence_online"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <TextView
-        android:id="@+id/itemtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="30sp"
-        tools:layout_editor_absoluteX="76dp"
-        tools:layout_editor_absoluteY="16dp" />
-</android.support.constraint.ConstraintLayout>
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@android:drawable/presence_online" />
+
+    <TextView
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/bullet"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/bullet"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:textSize="24sp" />
+</RelativeLayout>

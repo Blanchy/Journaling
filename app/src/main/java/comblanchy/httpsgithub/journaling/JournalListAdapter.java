@@ -2,6 +2,7 @@ package comblanchy.httpsgithub.journaling;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -20,6 +22,7 @@ import java.util.List;
 /**
  * Created by blanchypolangcos on 12/2/17.
  * http://codesfor.in/android-swipe-to-delete-listview/
+ * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 
 public class JournalListAdapter extends ArrayAdapter {
@@ -37,18 +40,25 @@ public class JournalListAdapter extends ArrayAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder mainViewholder = null;
+        JournalEntry je = (JournalEntry) getItem(position);
+
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(layout, parent, false);
 
             ViewHolder vh = new ViewHolder();
 
-
-            vh.item = (TextView) convertView.findViewById(R.id.itemtext);
+            vh.item = (TextView) convertView.findViewById(R.id.item);
             vh.bullet = (ImageView) convertView.findViewById(R.id.bullet);
+            vh.itemContainer = (RelativeLayout) convertView.findViewById(R.id.itemcontainer);
+
+            vh.item.setText(je.getTitle());
+            Log.v("list agenda", je.getTitle());
+            vh.bullet.setImageDrawable(changeBullet(je.getType(), je.getColor()));
+            Log.v("list agenda type", je.getType()+"");
+            Log.v("list agenda color", je.getColor()+"");
             convertView.setTag(vh);
         }
-
         convertView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -62,15 +72,18 @@ public class JournalListAdapter extends ArrayAdapter {
 
 
         //mainViewholder.item.setText(getItem(position));
-
-        Log.d("list agenda", "got name...");
         return convertView;
 
+    }
+
+    public Drawable changeBullet(int type, int color) {
+        return null;
     }
 
     public class ViewHolder {
         TextView item;
         ImageView bullet;
+        RelativeLayout itemContainer;
     }
 
 }

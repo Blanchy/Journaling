@@ -198,9 +198,10 @@ public class JournalDBHelper extends SQLiteOpenHelper {
         return entryList;
     }
 
-    public ArrayList<JournalEntry> getEntriesByMonth(int month) {
+    public ArrayList<JournalEntry> getEntriesByMonth(int year, int month) {
         ArrayList<JournalEntry> entryList = new ArrayList<JournalEntry>();
-        String query = "SELECT * FROM " + DATABASE_TABLE + " WHERE " + MONTH + " = " + month;
+        String query = "SELECT * FROM " + DATABASE_TABLE + " WHERE " + MONTH + " = " + month
+                + " AND " + YEAR + " = " + year;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);

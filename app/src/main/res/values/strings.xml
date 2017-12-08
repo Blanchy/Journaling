@@ -20,6 +20,17 @@
     <string name="open_weather_maps_app_id">526068f3b7e12f639dc2025df92d4784</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
 
+    <string name="shared_preferences">settings</string>
+    <string name="greeting_pref">greetingPref</string>
+    <string name="greeting_default">DATE</string>
+    <string name="city_pref">cityPref</string>
+    <string name="location_pref">locationPref</string>
+
+    <string name="agenda">AGENDA</string>
+    <string name="settings">SETTINGS</string>
+
+    <string name="agenda_date">AGENDA FOR %s / %s</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

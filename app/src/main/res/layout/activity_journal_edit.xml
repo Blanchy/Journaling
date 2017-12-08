@@ -99,11 +99,11 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/leftbutton"
+                    android:id="@+id/decrement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    app:srcCompat="@color/colorAccent" />
 
                 <Button
                     android:id="@+id/submitbutton"
@@ -117,11 +117,11 @@
                     android:textStyle="bold" />
 
                 <ImageButton
-                    android:id="@+id/rightbutton"
+                    android:id="@+id/increment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_media_play_light" />
+                    app:srcCompat="@drawable/mr_dialog_material_background_dark" />
             </LinearLayout>
 
         </LinearLayout>

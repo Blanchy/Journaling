@@ -19,6 +19,7 @@ import java.util.List;
 
 /**
  * Created by blanchypolangcos on 12/2/17.
+ * http://codesfor.in/android-swipe-to-delete-listview/
  */
 
 public class JournalListAdapter extends ArrayAdapter {

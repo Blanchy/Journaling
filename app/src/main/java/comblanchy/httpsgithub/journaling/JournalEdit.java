@@ -80,8 +80,20 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
         submit.setBackgroundColor(GREEN);
         submit.setTextColor(Color.WHITE);
 
-        decrement = (ImageButton) findViewById(R.id.left);
-        increment = (ImageButton) findViewById(R.id.right);
+        decrement = (ImageButton) findViewById(R.id.decrement);
+        decrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iterate(-1);
+            }
+        });
+        increment = (ImageButton) findViewById(R.id.increment);
+        increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iterate(1);
+            }
+        });
 
         weatherDisplay = (WeatherDisplay) getSupportFragmentManager().findFragmentById(R.id.weatherfragment);
 /**
@@ -101,7 +113,7 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
         else if (bulletIndex < 0) {
             bulletIndex = bulletArray.length-1;
         }
-        submit.setBackgroundColor(bulletIndex);
+        submit.setBackgroundColor(bulletArray[bulletIndex]);
         return bulletIndex;
     }
 
@@ -109,7 +121,7 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
         String sTitle = (String) title.getText().toString();
         String sDesc = (String) description.getText().toString();
         boolean imp = important.isChecked();
-
+        int color = bulletIndex;
         int code = ((WeatherDisplay) weatherDisplay).getCode();
         double temp = ((WeatherDisplay) weatherDisplay).getTemp();
 
@@ -117,12 +129,12 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
         Log.v("Entry info", sDesc);
         Log.v("Entry info", code + "");
         Log.v("Entry info", temp + "");
-        /*
+
         JournalEntry je = new JournalEntry(dd, mm, yyyy,
                 sTitle, sDesc,
                 JournalEntry.CIRCLE, bulletIndex, imp,
                 weatherCode, weatherTemp);
-                */
+
     }
 
     public void submit(View view) {

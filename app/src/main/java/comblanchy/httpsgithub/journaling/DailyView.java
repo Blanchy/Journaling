@@ -2,6 +2,7 @@ package comblanchy.httpsgithub.journaling;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorListener;
@@ -35,6 +36,9 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
         setContentView(R.layout.activity_daily_view);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
 
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.shared_preferences),Context.MODE_PRIVATE);
+        String greet = sharedPref.getString(getString(R.string.greeting_pref), getString(R.string.greeting_default));
+
         Configuration config = getResources().getConfiguration();
         if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
             greetings = (TextView) findViewById(R.id.datetext);
@@ -47,12 +51,16 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
                 }
             });
         }
+        greetings.setText(greet);
 
         agenda = (TextView) findViewById(R.id.todaytext);
         agenda.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 Intent toAgenda = new Intent(DailyView.this, DetailedAgenda.class);
+                toAgenda.putExtra("yyyy", datePicker.getYear());
+                toAgenda.putExtra("mm", datePicker.getMonth());
+                toAgenda.putExtra("dd", datePicker.getDayOfMonth());
                 startActivity(toAgenda);
                 return true;
             }
@@ -63,17 +71,31 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
         final TextView agenda = (TextView) findViewById(R.id.todaytext);
         addEntry = (FloatingActionButton) findViewById(R.id.addEntry);
 
-        datePicker.init(c.get(Calendar.YEAR),
-                c.get(Calendar.MONTH),
-                c.get(Calendar.DAY_OF_MONTH),
-                new DatePicker.OnDateChangedListener() {
-                    @Override
-                    public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                        Log.v("datepicker", i + " " + i1 + " " + i2);
-                        agenda.setText("Changed to " + i);
-                        dateChanged(i, i1, i2);
-                    }
-                });
+        DatePicker.OnDateChangedListener dateListener = new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
+                Log.v("datepicker", i + " " + i1 + " " + i2);
+                agenda.setText("Changed to " + i);
+                dateChanged(i, i1, i2);
+            }
+        };
+
+        if (savedInstanceState == null) {
+            datePicker.init(c.get(Calendar.YEAR),
+                    c.get(Calendar.MONTH),
+                    c.get(Calendar.DAY_OF_MONTH),
+                    dateListener
+                    );
+        }
+        else {
+            int[] date = savedInstanceState.getIntArray("SelectedDate");
+            datePicker.init(date[0],
+                    date[1],
+                    date[2],
+                    dateListener
+            );
+        }
+
 
 
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -113,6 +135,12 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
         intent.putExtra("mm", datePicker.getMonth());
         intent.putExtra("dd", datePicker.getDayOfMonth());
         startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        int[] date = {datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth()};
+        savedInstanceState.putIntArray("SelectedDate", date);
     }
 
     @Override

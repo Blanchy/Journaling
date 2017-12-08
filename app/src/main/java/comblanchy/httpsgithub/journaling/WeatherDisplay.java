@@ -1,6 +1,7 @@
 package comblanchy.httpsgithub.journaling;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.icu.text.DateFormat;
@@ -47,6 +48,8 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
     private TextView temp;
     private double temperature;
     private int PERMISSION_LOCATION_FINE;
+    private String city;
+    private boolean useGPS;
 
     Handler handler;
     public WeatherDisplay() {
@@ -70,8 +73,13 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_preferences),Context.MODE_PRIVATE);
+        city = sharedPref.getString(getString(R.string.city_pref), "San Francisco");
+        useGPS = sharedPref.getBoolean(getString(R.string.location_pref), false);
+
         int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION);
+
         if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
             // ask permissions here using below code
             ActivityCompat.requestPermissions(getActivity(),
@@ -79,7 +87,7 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
                     PERMISSION_LOCATION_FINE);
         }
         else {
-            updateWeatherData("Sydney"); //TODO: implement locationmanager
+            updateWeatherData(city); //TODO: implement locationmanager
         }
 
 
@@ -140,10 +148,10 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
         if (requestCode == PERMISSION_LOCATION_FINE) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission has been granted.
-                updateWeatherData("Sydney");
+                updateWeatherData(city);
             } else {
                 // Permission request was denied.
-                updateWeatherData("Manila");
+                updateWeatherData(city);
             }
         }
     }
@@ -177,7 +185,7 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
                 }
                 else
                 {
-                    if (locationProvider != null) {
+                    if (locationProvider != null && useGPS) {
                         Location location = locationManager.getLastKnownLocation(locationProvider); //TODO: request location
                         if (location != null) {
                             json = RemoteFetch.buildURLFromCoord(getActivity(), location.getLatitude(), location.getLongitude());
@@ -227,7 +235,7 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
             temperature = main.getDouble("temp");
 
             temp.setText(
-                    String.format("%.2f", temperature)+ " ℃");
+                    String.format("%.2f", temperature)+ " °F");
 
             setWeatherIcon(details.getInt("id"),
                     json.getJSONObject("sys").getLong("sunrise") * 1000,

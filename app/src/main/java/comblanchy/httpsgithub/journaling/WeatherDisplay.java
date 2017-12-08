@@ -1,12 +1,21 @@
 package comblanchy.httpsgithub.journaling;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.icu.text.DateFormat;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,19 +39,14 @@ import java.util.Locale;
  * Use the {@link WeatherDisplay#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WeatherDisplay extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private OnFragmentInteractionListener mListener;
     private ImageView weatherIcon;
+    private int code;
     private TextView temp;
+    private double temperature;
+    private int PERMISSION_LOCATION_FINE;
 
     Handler handler;
     public WeatherDisplay() {
@@ -53,29 +57,32 @@ public class WeatherDisplay extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment WeatherDisplay.
      */
     // TODO: Rename and change types and number of parameters
     public static WeatherDisplay newInstance(String param1, String param2) {
         WeatherDisplay fragment = new WeatherDisplay();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+        if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            // ask permissions here using below code
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_LOCATION_FINE);
         }
-        updateWeatherData("Sydney"); //TODO: implement locationmanager
+        else {
+            updateWeatherData("Sydney"); //TODO: implement locationmanager
+        }
+
+
     }
 
     @Override
@@ -127,14 +134,67 @@ public class WeatherDisplay extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSION_LOCATION_FINE) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted.
+                updateWeatherData("Sydney");
+            } else {
+                // Permission request was denied.
+                updateWeatherData("Manila");
+            }
+        }
+    }
+
     /******************************************************************************************
      * Weather
+     * https://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587
+     * https://thenounproject.com/ricardovscardoso/collection/meteorology-pack/
      ******************************************************************************************/
 
     private void updateWeatherData(final String city){
         new Thread(){
             public void run(){
-                final JSONObject json = RemoteFetch.getJSON(getActivity(), city);
+                final JSONObject json;
+                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                criteria.setPowerRequirement(Criteria.POWER_LOW);
+                String locationProvider = locationManager.getBestProvider(criteria, true);
+
+                if (ActivityCompat.checkSelfPermission(getContext(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getContext(),
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    Log.v("Location","no permission");
+
+                    json = RemoteFetch.buildURLFromCity(getActivity(), city);
+                }
+                else
+                {
+                    if (locationProvider != null) {
+                        Location location = locationManager.getLastKnownLocation(locationProvider); //TODO: request location
+                        if (location != null) {
+                            json = RemoteFetch.buildURLFromCoord(getActivity(), location.getLatitude(), location.getLongitude());
+                        }
+                        else {
+                            json = RemoteFetch.buildURLFromCity(getActivity(), city);
+                        }
+                    }
+                    else {
+                        json = RemoteFetch.buildURLFromCity(getActivity(), city);
+                        Log.v("Location", "null provider");
+                    }
+                }
+
+                //TODO: if location is null, get city from preferences
+
+
                 if(json == null){
                     Log.v("Weather Handler", "null json");
                     handler.post(new Runnable(){
@@ -164,8 +224,10 @@ public class WeatherDisplay extends Fragment {
             JSONObject details = json.getJSONArray("weather").getJSONObject(0);
             JSONObject main = json.getJSONObject("main");
 
+            temperature = main.getDouble("temp");
+
             temp.setText(
-                    String.format("%.2f", main.getDouble("temp"))+ " ℃");
+                    String.format("%.2f", temperature)+ " ℃");
 
             setWeatherIcon(details.getInt("id"),
                     json.getJSONObject("sys").getLong("sunrise") * 1000,
@@ -177,7 +239,7 @@ public class WeatherDisplay extends Fragment {
     }
 
     private void setWeatherIcon(int actualId, long sunrise, long sunset){
-        int id = actualId / 100;
+        code = actualId / 100;
         String icon = "";
         if(actualId == 800){
             long currentTime = new Date().getTime();
@@ -187,7 +249,7 @@ public class WeatherDisplay extends Fragment {
                 //icon = getActivity().getString(R.string.weather_clear_night);
             }
         } else {
-            switch(id) {
+            switch(code) {
                 case 2 : icon = "thunder";
                     break;
                 case 3 : icon = "drizzle";
@@ -203,5 +265,32 @@ public class WeatherDisplay extends Fragment {
             }
         }
         //weathericon.setText(icon);
+    }
+
+    private void setWeatherFromIntent(int icon, double temp) {
+        this.temp.setText(String.valueOf(temp));
+        switch(icon) {
+            case 2 : ; // thunder
+                break;
+            case 3 : ; // drizzle
+                break;
+            case 7 : ; // foggy
+                break;
+            case 8 : ; // cloudy
+                break;
+            case 6 : ; // snowy
+                break;
+            case 5 : ; // rainy
+                break;
+        }
+        //weatherIcon.setImageResource();
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public double getTemp() {
+        return temperature;
     }
 }

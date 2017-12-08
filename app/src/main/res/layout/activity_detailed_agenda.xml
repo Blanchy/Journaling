@@ -6,4 +6,25 @@
     android:layout_height="match_parent"
     tools:context="comblanchy.httpsgithub.journaling.DetailedAgenda">
 
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+
+    </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="318dp"
+        android:layout_marginTop="445dp"
+        android:clickable="true"
+        android:src="@drawable/ic_mr_button_connecting_03_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

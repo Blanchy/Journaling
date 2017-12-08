@@ -7,7 +7,9 @@ package comblanchy.httpsgithub.journaling;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -18,12 +20,34 @@ import android.util.Log;
 public class RemoteFetch {
 
     private static final String OPEN_WEATHER_MAP_API =
-            "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
+            "http://api.openweathermap.org/data/2.5/weather?q=%s&units=imperial";
+    private static final String OPEN_WEATHER_MAP_COORDINATES =
+            "api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s";
 
-    public static JSONObject getJSON(Context context, String city){
-
+    public static JSONObject buildURLFromCity(Context context, String city) {
         try {
             URL url = new URL(String.format(OPEN_WEATHER_MAP_API, city));
+            return getJSON(context, url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static JSONObject buildURLFromCoord(Context context, double lat, double lon) {
+        try {
+            URL url = new URL(String.format(OPEN_WEATHER_MAP_COORDINATES, lat, lon));
+            return getJSON(context, url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static JSONObject getJSON(Context context, URL url){
+
+        try {
+
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();
 

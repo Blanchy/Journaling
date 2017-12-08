@@ -18,9 +18,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
-
-        </activity>>
+            android:label="@string/title_activity_login"></activity>
+        >
         <activity android:name=".JournalEdit" />
         <activity android:name=".DailyView">
             <intent-filter>
@@ -30,9 +29,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailedAgenda" />
-        <activity android:name=".GoogleSignInActivity">
-
-        </activity>
+        <activity android:name=".GoogleSignInActivity"></activity>
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>

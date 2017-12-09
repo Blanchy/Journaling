@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,12 +30,14 @@ public class JournalListAdapter extends ArrayAdapter {
     private int layout;
     private List<JournalEntry> objects;
     private Context context;
+    private GestureDetector gestureDetector;
 
     public JournalListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<JournalEntry> objects) {
         super(context, resource, objects);
         this.objects = objects;
         layout = resource;
         this.context = context;
+        gestureDetector = new GestureDetector(context, new AdapterGestureDetector());
     }
 
     @Override
@@ -57,21 +60,20 @@ public class JournalListAdapter extends ArrayAdapter {
             vh.bullet.setImageDrawable(changeBullet(je.getType(), je.getColor()));
             Log.v("list agenda type", je.getType()+"");
             Log.v("list agenda color", je.getColor()+"");
+
+            vh.itemContainer.setOnTouchListener(
+                    new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            return gestureDetector.onTouchEvent(motionEvent);
+                        }
+                    }
+            );
+
             convertView.setTag(vh);
         }
-        convertView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return false;
-            }
-        });
-        //HashMap<String, Integer> ingredients = RecipeHolder.getInstance().getIngredients();
 
         mainViewholder = (ViewHolder) convertView.getTag();
-        // add fling listener
-
-
-        //mainViewholder.item.setText(getItem(position));
         return convertView;
 
     }
@@ -119,5 +121,7 @@ public class JournalListAdapter extends ArrayAdapter {
         ImageView bullet;
         RelativeLayout itemContainer;
     }
+
+
 
 }

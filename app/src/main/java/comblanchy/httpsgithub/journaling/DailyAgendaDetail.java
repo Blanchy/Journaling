@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.net.URI;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,13 +69,6 @@ public class DailyAgendaDetail extends Fragment {
         return inflater.inflate(R.layout.fragment_daily_agenda_detail, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -89,6 +84,10 @@ public class DailyAgendaDetail extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setJournalEntry(JournalEntry je) {
+        
     }
 
     /**

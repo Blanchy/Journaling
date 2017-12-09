@@ -35,7 +35,9 @@ public class JournalDBHelper extends SQLiteOpenHelper {
 
     private int entryCount = 0;
 
-    private JournalEntry sample1 = new JournalEntry(8,12,2017,"eat some bread","lots of bread",JournalEntry.CIRCLE,JournalEntry.BLUE,false,0,0);
+    private SQLiteDatabase db;
+
+    private JournalEntry sample1 = new JournalEntry(8,11,2017,"eat some bread","lots of bread",JournalEntry.CIRCLE,JournalEntry.BLUE,false,0,0);
 
     private static final String CREATE_DB_TABLE = "CREATE TABLE " + DATABASE_TABLE +
             " (_id INTEGER PRIMARY KEY, " +
@@ -50,17 +52,19 @@ public class JournalDBHelper extends SQLiteOpenHelper {
                     " code INT, " +
                     " temp INT" +
                     ");";;
+    private static final String FIRST_ENTRY = "INSERT INTO " + DATABASE_TABLE +
+            " VALUES (0, 8, 11, 2017, 'eat some bread', 'lots of bread', 1, 1, 0, 2, 1.3);";
 
-
-    public JournalDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public JournalDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_DB_TABLE);
-        addEntry(sample1);
+        sqLiteDatabase.execSQL(FIRST_ENTRY);
+        db = sqLiteDatabase;
         Log.d("DATABASE", "is created");
     }
 

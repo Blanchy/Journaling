@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -16,6 +17,7 @@ public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFr
     private int yyyy;
     private int mm;
     private int dd;
+    private TextView agendaText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFr
             dd = savedInstanceState.getInt("dd");
         }
 
+        agendaText = (TextView) findViewById(R.id.agendatext);
+        agendaText.setText(String.format(getString(R.string.agenda_date), mm + "", yyyy + ""));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addButton);
         fab.setOnClickListener(new View.OnClickListener() {

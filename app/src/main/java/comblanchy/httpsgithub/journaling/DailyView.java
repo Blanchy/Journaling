@@ -43,7 +43,6 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_view);
 
-
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.shared_preferences),Context.MODE_PRIVATE);
         String greet = sharedPref.getString(getString(R.string.greeting_pref), getString(R.string.greeting_default));
         Calendar c = Calendar.getInstance();
@@ -155,5 +154,10 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    protected  void onResume() {
+        super.onResume();
     }
 }

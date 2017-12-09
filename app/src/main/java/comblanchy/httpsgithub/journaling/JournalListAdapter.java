@@ -60,15 +60,7 @@ public class JournalListAdapter extends ArrayAdapter {
             vh.bullet.setImageDrawable(changeBullet(je.getType(), je.getColor()));
             Log.v("list agenda type", je.getType()+"");
             Log.v("list agenda color", je.getColor()+"");
-
-            vh.itemContainer.setOnTouchListener(
-                    new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            return gestureDetector.onTouchEvent(motionEvent);
-                        }
-                    }
-            );
+            Log.v("list agenda journal temp", je.getWeatherTemp() + "");
 
             convertView.setTag(vh);
         }
@@ -80,7 +72,9 @@ public class JournalListAdapter extends ArrayAdapter {
 
     public Drawable changeBullet(int type, int color) {
         Drawable d;
+        Log.v("deciding color", color + "");
         if (color == JournalEntry.GREEN) {
+            Log.v("deciding color", "picking green");
             if (type == JournalEntry.EX) {
                 d = context.getResources().getDrawable(R.drawable.bullet_done_green, null);
             }
@@ -92,6 +86,7 @@ public class JournalListAdapter extends ArrayAdapter {
             }
         }
         else if (color == JournalEntry.BLUE) {
+            Log.v("deciding color", "picking blue");
             if (type == JournalEntry.EX) {
                 d = context.getResources().getDrawable(R.drawable.bullet_done_blue, null);
             }
@@ -103,6 +98,7 @@ public class JournalListAdapter extends ArrayAdapter {
             }
         }
         else { //red
+            Log.v("deciding color", "picking red");
             if (type == JournalEntry.EX) {
                 d = context.getResources().getDrawable(R.drawable.bullet_done_red, null);
             }

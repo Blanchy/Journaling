@@ -121,7 +121,7 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
         String sTitle = (String) title.getText().toString();
         String sDesc = (String) description.getText().toString();
         boolean imp = important.isChecked();
-        int color = bulletIndex;
+        int color = bulletArray[bulletIndex];
         int code = ((WeatherDisplay) weatherDisplay).getCode();
         double temp = ((WeatherDisplay) weatherDisplay).getTemp();
 
@@ -132,9 +132,11 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
 
         JournalEntry je = new JournalEntry(dd, mm, yyyy,
                 sTitle, sDesc,
-                JournalEntry.CIRCLE, bulletIndex, imp,
+                JournalEntry.CIRCLE, color, imp,
                 weatherCode, weatherTemp);
 
+        JournalDBHelper db = new JournalDBHelper(this);
+        db.addEntry(je);
     }
 
     public void submit(View view) {

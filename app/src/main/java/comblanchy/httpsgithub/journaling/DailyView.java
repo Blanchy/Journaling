@@ -34,6 +34,8 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
     private Sensor accelerometer;
     private ShakeDetector shakeDetector;
 
+    private DailyAgenda fragment;
+
     private int yyyy;
     private int mm;
     private int dd;
@@ -46,6 +48,8 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.shared_preferences),Context.MODE_PRIVATE);
         String greet = sharedPref.getString(getString(R.string.greeting_pref), getString(R.string.greeting_default));
         Calendar c = Calendar.getInstance();
+
+        fragment = (DailyAgenda) getFragmentManager().findFragmentById(R.id.fragment);
 
         if (savedInstanceState != null) {
             int[] date = savedInstanceState.getIntArray("SelectedDate");
@@ -66,7 +70,6 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
                 @Override
                 public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
                     Log.v("datepicker", i + " " + i1 + " " + i2);
-                    agenda.setText("Changed to " + i);
                     dateChanged(i, i1, i2);
                 }
             };
@@ -74,6 +77,7 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
         mm,
         dd,
         dateListener);
+        dateChanged(yyyy, mm, dd);
 
         greetings = (TextView) findViewById(R.id.datetext);
         greetings.setOnLongClickListener(new View.OnLongClickListener() {
@@ -134,7 +138,11 @@ public class DailyView extends AppCompatActivity implements DailyAgenda.OnFragme
      * @param i2 day
      */
     public void dateChanged(int i, int i1, int i2) {
-
+        Log.v("DailyView", "dateChanged");
+        yyyy = i;
+        mm = i1;
+        dd = i2;
+        fragment.setDate(i, i1, i2);
     }
 
     public void toJournalEdit(View view) {

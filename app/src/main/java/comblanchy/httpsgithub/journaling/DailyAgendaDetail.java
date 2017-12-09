@@ -1,12 +1,18 @@
 package comblanchy.httpsgithub.journaling;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.net.URI;
 
@@ -30,6 +36,11 @@ public class DailyAgendaDetail extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    ImageView weather;
+    TextView temp;
+    TextView desc;
+    TextView title;
+    TextView day;
 
     public DailyAgendaDetail() {
         // Required empty public constructor
@@ -66,18 +77,19 @@ public class DailyAgendaDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_daily_agenda_detail, container, false);
+        View v = inflater.inflate(R.layout.fragment_daily_agenda_detail, container, false);
+        weather = (ImageView) v.findViewById(R.id.weather);
+        temp = (TextView) v.findViewById(R.id.temp);
+        title = (TextView) v.findViewById(R.id.journalTitle);
+        desc = (TextView) v.findViewById(R.id.desc);
+        day = (TextView) v.findViewById(R.id.date);
+        return v;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override
@@ -87,7 +99,27 @@ public class DailyAgendaDetail extends Fragment {
     }
 
     public void setJournalEntry(JournalEntry je) {
-        
+        title.setText(je.getTitle());
+        temp.setText(je.getWeatherTemp()+ " °F");
+        desc.setText(je.getDesc());
+        day.setText("Day "+je.getDay());
+        //Log.v("getting weather", ""+je.getWeatherCode());
+        switch(je.getWeatherCode()) {
+            case 1 : weather.setImageResource(R.drawable.sun_icon);
+                break;
+            case 2 : weather.setImageResource(R.drawable.thunder_icon);
+                break;
+            case 3 : weather.setImageResource(R.drawable.rain_icon);
+                break;
+            case 7 : weather.setImageResource(R.drawable.fog_icon);
+                break;
+            case 8 : weather.setImageResource(R.drawable.cloud_icon);
+                break;
+            case 6 : weather.setImageResource(R.drawable.snow_icon);
+                break;
+            case 5 : weather.setImageResource(R.drawable.storm_icon);
+                break;
+        }
     }
 
     /**

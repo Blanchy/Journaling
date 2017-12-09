@@ -7,12 +7,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.Calendar;
 
-public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFragmentInteractionListener{
+public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFragmentInteractionListener, DailyAgenda.OnItemSelectedListener{
 
     private int yyyy;
     private int mm;
@@ -25,6 +26,7 @@ public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFr
         setContentView(R.layout.activity_detailed_agenda);
 
         if (savedInstanceState == null) {
+            Log.v("DetailedAgenda", "null state");
             Calendar c = Calendar.getInstance();
             Intent intent = getIntent();
             yyyy = intent.getIntExtra("yyyy", c.get(Calendar.YEAR));
@@ -32,13 +34,15 @@ public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFr
             dd = intent.getIntExtra("dd", c.get(Calendar.DAY_OF_MONTH));
         }
         else {
-            yyyy = savedInstanceState.getInt("yyyy");
-            mm = savedInstanceState.getInt("mm");
-            dd = savedInstanceState.getInt("dd");
+            Log.v("DetailedAgenda", "instance state");
+            int[] date = savedInstanceState.getIntArray("SelectedDate");
+            yyyy = date[0];
+            mm = date[1];
+            dd = date[2];
         }
 
         agendaText = (TextView) findViewById(R.id.agendatext);
-        agendaText.setText(String.format(getString(R.string.agenda_date), mm + "", yyyy + ""));
+        agendaText.setText(String.format(getString(R.string.agenda_date), (mm+1) + "", yyyy + ""));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +55,9 @@ public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFr
                 startActivity(intent);
             }
         });
+
+        DailyAgenda portrait = (DailyAgenda) getFragmentManager().findFragmentById(R.id.portrait);
+        portrait.setDate(yyyy, mm, dd);
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -61,5 +68,14 @@ public class DetailedAgenda extends FragmentActivity implements DailyAgenda.OnFr
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onEntrySelected(JournalEntry je) {
+        DailyAgendaDetail fragment = (DailyAgendaDetail) getFragmentManager().findFragmentById(R.id.landscape);
+
+        if (fragment != null && fragment.isInLayout()) {
+            fragment.setJournalEntry(je);
+        }
     }
 }

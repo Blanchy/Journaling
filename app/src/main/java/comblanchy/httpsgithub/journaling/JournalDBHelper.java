@@ -40,9 +40,9 @@ public class JournalDBHelper extends SQLiteOpenHelper {
     private JournalEntry sample1 = new JournalEntry(8,11,2017,"eat some bread","lots of bread",JournalEntry.CIRCLE,JournalEntry.BLUE,false,0,0);
 
     private static final String CREATE_DB_TABLE = "CREATE TABLE " + DATABASE_TABLE +
-            " (_id INTEGER PRIMARY KEY, " +
-                    " year TEXT, " +
-                    " month TEXT, " +
+            " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    " year INT, " +
+                    " month INT, " +
                     " day INT, " +
                     " title STRING, " +
                     " description STRING, " +
@@ -53,7 +53,7 @@ public class JournalDBHelper extends SQLiteOpenHelper {
                     " temp INT" +
                     ");";;
     private static final String FIRST_ENTRY = "INSERT INTO " + DATABASE_TABLE +
-            " VALUES (0, 8, 11, 2017, 'eat some bread', 'lots of bread', 1, 1, 0, 2, 1.3);";
+            " VALUES (0, 2017, 11, 8, 'eat some bread', 'lots of bread', 1, 1, 0, 2, 1.3);";
 
     public JournalDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -78,9 +78,9 @@ public class JournalDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         entryCount++;
-
+        Log.v("DB addEntry", entryCount+"");
         ContentValues values = new ContentValues();
-        values.put(ID, entryCount);
+        //values.put(ID, entryCount);
         values.put(YEAR, je.getYear());
         values.put(MONTH, je.getMonth());
         values.put(DAY, je.getDay());
@@ -93,7 +93,7 @@ public class JournalDBHelper extends SQLiteOpenHelper {
         values.put(TEMP, je.getWeatherTemp());
 
         long newRowId = db.insert(DATABASE_TABLE, null, values);
-
+        Log.v("new row id", newRowId + "");
         db.close();
     }
 
@@ -204,11 +204,11 @@ public class JournalDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<JournalEntry> getEntriesByMonth(int year, int month) {
         ArrayList<JournalEntry> entryList = new ArrayList<JournalEntry>();
-        String query = "SELECT * FROM " + DATABASE_TABLE + " WHERE " + MONTH + " = " + month
-                + " AND " + YEAR + " = " + year;
+        String query = "SELECT * FROM " + DATABASE_TABLE + " WHERE " + MONTH + " = " + month;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
+        Log.v("DB access by month", c.moveToFirst() + "");
 
         if (c.moveToFirst()) {
             do {
@@ -234,6 +234,8 @@ public class JournalDBHelper extends SQLiteOpenHelper {
                         c.getDouble(10));
 
                 entryList.add(je);
+                Log.v("Making entry with year ",c.getInt(0) + "");
+                Log.v("Making entry with year ",c.getDouble(10) + "");
             } while (c.moveToNext());
         }
 
@@ -242,13 +244,15 @@ public class JournalDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<JournalEntry> getEntriesByDate(int year, int month, int date) {
         ArrayList<JournalEntry> entryList = new ArrayList<JournalEntry>();
+
         String query = "SELECT * FROM " + DATABASE_TABLE +
-                " WHERE " + MONTH + " = " + month +
-                " AND " + DAY + " = " + date +
-                " AND " + year + " = " + year;
+                " WHERE " + MONTH + " = " + month + " AND " + YEAR + " = " + year;
+
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(query, null);
+        Cursor c = db.rawQuery("SELECT * FROM Entry where month = " + month, null);
+        //Log.v("DB access cursor", "Cursoer is " + c);
+        Log.v("DB access by day", c.moveToFirst() + "");
 
         if (c.moveToFirst()) {
             do {
@@ -261,6 +265,8 @@ public class JournalDBHelper extends SQLiteOpenHelper {
                     b = true;
                 }
 
+
+                Log.v("DB creating entry","year " + c.getInt(0));
                 JournalEntry je = new JournalEntry(c.getInt(0),
                         c.getInt(1),
                         c.getInt(2),

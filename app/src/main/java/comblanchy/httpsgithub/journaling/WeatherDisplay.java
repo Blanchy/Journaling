@@ -278,6 +278,8 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
     private void setWeatherFromIntent(int icon, double temp) {
         this.temp.setText(String.valueOf(temp));
         switch(icon) {
+            case 1 : weatherIcon.setImageResource(R.drawable.sun_icon);
+                break;
             case 2 : weatherIcon.setImageResource(R.drawable.thunder_icon);
                 break;
             case 3 : weatherIcon.setImageResource(R.drawable.rain_icon);

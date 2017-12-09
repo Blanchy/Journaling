@@ -141,7 +141,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
                 findViewById(R.id.signInButton).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             } else {
-                
+
 
                 findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);

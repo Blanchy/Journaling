@@ -70,6 +70,12 @@ public class JournalListAdapter extends ArrayAdapter {
 
     }
 
+    /**
+     * returns a bullet for the list item
+     * @param type of bullet
+     * @param color of bullet
+     * @return bullet drawable
+     */
     public Drawable changeBullet(int type, int color) {
         Drawable d;
         Log.v("deciding color", color + "");

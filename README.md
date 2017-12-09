@@ -10,7 +10,7 @@
 * https://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587
 * http://codesfor.in/android-swipe-to-delete-listview/
 * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
-* Taken from https://github.com/tutsplus/AndroidWeatherApp 
+* https://github.com/tutsplus/AndroidWeatherApp 
 
 ## Icons from thenounproject:
 * Fog Cloud by Ricardo Cardoso from the Noun Project

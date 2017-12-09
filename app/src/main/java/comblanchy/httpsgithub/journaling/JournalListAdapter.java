@@ -77,7 +77,41 @@ public class JournalListAdapter extends ArrayAdapter {
     }
 
     public Drawable changeBullet(int type, int color) {
-        return null;
+        Drawable d;
+        if (color == JournalEntry.GREEN) {
+            if (type == JournalEntry.EX) {
+                d = context.getResources().getDrawable(R.drawable.bullet_done_green, null);
+            }
+            else if (type == JournalEntry.ARROW) {
+                d = context.getResources().getDrawable(R.drawable.bullet_next_green, null);
+            }
+            else {
+                d = context.getResources().getDrawable(R.drawable.bullet_todo_green, null);
+            }
+        }
+        else if (color == JournalEntry.BLUE) {
+            if (type == JournalEntry.EX) {
+                d = context.getResources().getDrawable(R.drawable.bullet_done_blue, null);
+            }
+            else if (type == JournalEntry.ARROW) {
+                d = context.getResources().getDrawable(R.drawable.bullet_next_blue, null);
+            }
+            else {
+                d = context.getResources().getDrawable(R.drawable.bullet_todo_blue, null);
+            }
+        }
+        else { //red
+            if (type == JournalEntry.EX) {
+                d = context.getResources().getDrawable(R.drawable.bullet_done_red, null);
+            }
+            else if (type == JournalEntry.ARROW) {
+                d = context.getResources().getDrawable(R.drawable.bullet_next_red, null);
+            }
+            else {
+                d = context.getResources().getDrawable(R.drawable.bullet_todo_red, null);
+            }
+        }
+        return d;
     }
 
     public class ViewHolder {

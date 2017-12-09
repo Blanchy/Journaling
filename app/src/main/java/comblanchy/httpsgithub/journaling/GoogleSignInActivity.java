@@ -136,12 +136,12 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
 
         private void updateUI(@Nullable GoogleSignInAccount account) {
             if (account != null) {
-                //mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
+
 
                 findViewById(R.id.signInButton).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             } else {
-                //mStatusTextView.setText("Signed out");
+                
 
                 findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);

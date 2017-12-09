@@ -27,7 +27,6 @@ import com.google.android.gms.tasks.Task;
 public class GoogleSignInActivity extends AppCompatActivity implements View.OnClickListener {
 
     GoogleSignInClient mGoogleSignInClient;
-    private TextView mStatusTextView;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
 
@@ -44,7 +43,6 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        mStatusTextView = (TextView) findViewById(R.id.status);
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.signInButton);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -72,17 +70,17 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
                 signIn();
                 break;
             case R.id.signOutButton:
-                mStatusTextView.setText("Signing out");
-                signOut();
+
+                signOut(view);
                 break;
             case R.id.disconnectButton:
-                mStatusTextView.setText("Disconnecting");
-                revokeAccess();
+
+                revokeAccess(view);
                 break;
         }
     }
 
-    private void signOut() {
+    private void signOut(View view) {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -92,6 +90,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
                         // [END_EXCLUDE]
                     }
                 });
+        Log.v("Login status", "logged out");
     }
 
     @Override
@@ -107,7 +106,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void revokeAccess() {
+    private void revokeAccess(View view) {
         mGoogleSignInClient.revokeAccess()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -125,6 +124,8 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
 
             // Signed in successfully, show authenticated UI.
             updateUI(account);
+            Intent intent = new Intent(this, DailyView.class);
+            startActivity(intent);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -135,12 +136,12 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
 
         private void updateUI(@Nullable GoogleSignInAccount account) {
             if (account != null) {
-                mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
+                //mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
 
                 findViewById(R.id.signInButton).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             } else {
-                mStatusTextView.setText("Signed out");
+                //mStatusTextView.setText("Signed out");
 
                 findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);

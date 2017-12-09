@@ -103,6 +103,7 @@ public class DailyAgendaDetail extends Fragment {
         temp.setText(je.getWeatherTemp()+ " °F");
         desc.setText(je.getDesc());
         day.setText("Day "+je.getDay());
+        Log.v("getting day", je.getDay() + "");
         //Log.v("getting weather", ""+je.getWeatherCode());
         switch(je.getWeatherCode()) {
             case 1 : weather.setImageResource(R.drawable.sun_icon);

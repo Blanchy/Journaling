@@ -22,14 +22,15 @@
         >
         <activity android:name=".JournalEdit" />
         <activity android:name=".DailyView">
+        </activity>
+        <activity android:name=".DetailedAgenda" />
+        <activity android:name=".GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailedAgenda" />
-        <activity android:name=".GoogleSignInActivity"></activity>
         <activity android:name=".Settings"></activity>
     </application>
 

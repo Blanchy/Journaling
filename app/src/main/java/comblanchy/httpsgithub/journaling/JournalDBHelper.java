@@ -63,7 +63,7 @@ public class JournalDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_DB_TABLE);
-        sqLiteDatabase.execSQL(FIRST_ENTRY);
+        //sqLiteDatabase.execSQL(FIRST_ENTRY);
         db = sqLiteDatabase;
         Log.d("DATABASE", "is created");
     }
@@ -266,7 +266,13 @@ public class JournalDBHelper extends SQLiteOpenHelper {
                 }
 
 
-                Log.v("DB creating entry","year " + c.getInt(0));
+                Log.v("DB creating entry","year " + c.getInt(1));
+                Log.v("DB creating entry","month " + c.getInt(2));
+                Log.v("DB creating entry","date " + c.getInt(3));
+                Log.v("DB creating entry","title " + c.getString(4));
+                Log.v("DB creating entry","desc " + c.getString(5));
+                Log.v("DB creating entry","code " + c.getInt(9));
+                Log.v("DB creating entry","temp " + c.getInt(10));
                 JournalEntry je = new JournalEntry(c.getInt(0),
                         c.getInt(1),
                         c.getInt(2),

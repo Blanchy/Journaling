@@ -64,7 +64,7 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
         if (i.hasExtra("yyyy")) {
             yyyy = i.getIntExtra("yyyy", 2017);
         }
-        String dateformat = mm + " / " + dd + " / " + yyyy;
+        String dateformat = (mm+1) + " / " + dd + " / " + yyyy;
 
         //weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
         //tempView = (TextView) findViewById(R.id.tempView);
@@ -133,7 +133,7 @@ public class JournalEdit extends FragmentActivity implements WeatherDisplay.OnFr
         JournalEntry je = new JournalEntry(dd, mm, yyyy,
                 sTitle, sDesc,
                 JournalEntry.CIRCLE, color, imp,
-                weatherCode, weatherTemp);
+                code, temp);
 
         JournalDBHelper db = new JournalDBHelper(this);
         db.addEntry(je);

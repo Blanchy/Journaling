@@ -37,6 +37,13 @@
             android:layout_height="140dp"
             app:srcCompat="@drawable/journal_icon" />
 
+        <Button
+            android:id="@+id/openbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open"
+            android:visibility="invisible" />
+
     </LinearLayout>
 
 

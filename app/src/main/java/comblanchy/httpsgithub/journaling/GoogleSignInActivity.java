@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -29,6 +30,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
     GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
+    Button open;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,14 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
         findViewById(R.id.signInButton).setOnClickListener(this);
+        open = (Button) findViewById(R.id.openbutton);
+        open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GoogleSignInActivity.this, DailyView.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -91,6 +101,8 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
         Log.v("Login status", "logged out");
+        open.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -124,6 +136,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
 
             // Signed in successfully, show authenticated UI.
             updateUI(account);
+            open.setVisibility(View.VISIBLE);
             Intent intent = new Intent(this, DailyView.class);
             startActivity(intent);
         } catch (ApiException e) {
@@ -137,12 +150,12 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
         private void updateUI(@Nullable GoogleSignInAccount account) {
             if (account != null) {
 
-
+                open.setVisibility(View.VISIBLE);
                 findViewById(R.id.signInButton).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             } else {
 
-
+                open.setVisibility(View.INVISIBLE);
                 findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
             }

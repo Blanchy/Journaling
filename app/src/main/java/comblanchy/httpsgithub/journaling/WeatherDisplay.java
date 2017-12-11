@@ -186,16 +186,16 @@ public class WeatherDisplay extends Fragment implements ActivityCompat.OnRequest
                 else
                 {
                     if (locationProvider != null && useGPS) {
-                        Location location = locationManager.getLastKnownLocation(locationProvider); //TODO: request location
+                        Location location = locationManager.getLastKnownLocation(locationProvider);
                         if (location != null) {
                             json = RemoteFetch.buildURLFromCoord(getActivity(), location.getLatitude(), location.getLongitude());
                         }
                         else {
-                            json = RemoteFetch.buildURLFromCity(getActivity(), city);
+                            json = RemoteFetch.buildURLFromCity(getActivity(), city); // location is null; get user-input city
                         }
                     }
                     else {
-                        json = RemoteFetch.buildURLFromCity(getActivity(), city);
+                        json = RemoteFetch.buildURLFromCity(getActivity(), city); // location is null; get user-input city
                         Log.v("Location", "null provider");
                     }
                 }
